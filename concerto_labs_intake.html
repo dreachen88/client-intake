@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concerto Labs — AI Coaching Intake</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;min-height:100vh;padding:32px 16px;color:#1a1a18}
+.form-wrap{max-width:620px;margin:0 auto}
+.form-title{font-size:13px;font-weight:500;color:#888;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:16px}
+.elicit{border:1px solid #e0ddd6;border-radius:12px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.07);overflow:hidden}
+.elicit-header{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid #ece9e2;background:#faf9f7}
+.elicit-header svg{width:20px;height:20px;flex-shrink:0;color:#888}
+.elicit-header span{font-size:15px;font-weight:500}
+.elicit-body{padding:24px;display:flex;flex-direction:column;gap:22px}
+.elicit-group{display:flex;flex-direction:column;gap:8px}
+.elicit-question{font-size:14px;font-weight:500;line-height:1.4}
+.elicit-pills{display:flex;flex-wrap:wrap;gap:8px}
+.elicit-pill{border:1px solid #ddd;border-radius:8px;padding:7px 14px;font-size:13px;color:#1a1a18;background:#fff;cursor:pointer;transition:border-color 0.15s,background 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.elicit-pill:hover{border-color:#aaa;background:#faf9f7}
+.elicit-pill[aria-pressed="true"]{background:#EEF5FF;border-color:#378ADD;color:#185FA5}
+.elicit-other{margin-top:6px;width:100%;padding:8px 12px;font-size:13px;border:1px solid #ddd;border-radius:8px;font-family:inherit}
+.elicit-textarea{width:100%;padding:10px 12px;font-size:13px;border:1px solid #ddd;border-radius:8px;font-family:inherit;resize:vertical;min-height:72px}
+.elicit-footer{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid #ece9e2;background:#faf9f7}
+.elicit-skip{padding:7px 16px;font-size:13px;border:1px solid #ddd;border-radius:8px;background:transparent;color:#666;cursor:pointer}
+.elicit-submit{padding:7px 18px;font-size:13px;font-weight:500;border:1px solid #378ADD;border-radius:8px;background:#378ADD;color:#fff;cursor:pointer}
+.elicit-submit:hover{background:#185FA5}
+.divider{border:none;border-top:1px solid #ece9e2;margin:2px 0}
+
+.freq-grid{width:100%;border-collapse:collapse}
+.freq-grid thead th{font-size:12px;font-weight:500;color:#888;padding:6px 8px;text-align:center;border-bottom:1px solid #ece9e2}
+.freq-grid thead th:first-child{text-align:left}
+.freq-grid tbody tr{border-bottom:1px solid #ece9e2}
+.freq-grid tbody tr:last-child{border-bottom:none}
+.freq-grid tbody td{padding:8px}
+.freq-grid tbody td:first-child{font-size:13px;padding-left:0}
+.freq-cell{display:flex;justify-content:center}
+.freq-btn{width:28px;height:28px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.15s,background 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.freq-btn:hover{border-color:#aaa;background:#faf9f7}
+.freq-btn[aria-pressed="true"]{background:#378ADD;border-color:#378ADD}
+.freq-btn[aria-pressed="true"] .freq-dot{background:#fff}
+.freq-dot{width:8px;height:8px;border-radius:50%;background:#ccc;transition:background 0.15s}
+.freq-other-row{display:flex;align-items:center;gap:10px;padding-top:8px;border-top:1px solid #ece9e2;margin-top:2px}
+.freq-other-input{flex:1;padding:6px 10px;font-size:13px;border:1px solid #ddd;border-radius:8px;font-family:inherit}
+.freq-other-btns{display:flex;gap:6px;flex-shrink:0}
+
+.plan-group{display:none;flex-direction:column;gap:8px}
+.plan-group.visible{display:flex}
+.plan-hint{font-size:12px;color:#999;margin-top:2px}
+.plan-rows{display:flex;flex-direction:column;gap:6px}
+.plan-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #ece9e2;border-radius:8px;background:#faf9f7}
+.plan-label{font-size:13px;min-width:140px;flex-shrink:0}
+.plan-options{display:flex;gap:6px;flex-wrap:wrap}
+.plan-btn{border:1px solid #ddd;border-radius:8px;padding:4px 10px;font-size:12px;background:#fff;cursor:pointer;transition:border-color 0.15s,background 0.15s}
+.plan-btn[aria-pressed="true"]{background:#EEF5FF;border-color:#378ADD;color:#185FA5}
+
+.confid-scale{display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid #ece9e2;border-radius:8px;background:#faf9f7}
+.confid-labels{display:flex;justify-content:space-between;gap:8px}
+.confid-label-lo,.confid-label-hi{font-size:11px;color:#666;max-width:45%;line-height:1.4}
+.confid-label-hi{text-align:right}
+.confid-track{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.confid-pip{width:36px;height:36px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#888;transition:all 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.confid-pip:hover{border-color:#aaa}
+.confid-pip.selected{background:#378ADD;border-color:#378ADD;color:#fff}
+.confid-value{font-size:12px;color:#bbb;text-align:center;min-height:16px}
+.confid-value.active{color:#666}
+.confid-note{font-size:11px;color:#999;line-height:1.5;padding:10px 12px;border-top:1px solid #ece9e2;margin-top:4px}
+
+.consent-card{display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid #ece9e2;border-radius:8px;background:#faf9f7}
+.consent-q{font-size:13px;font-weight:500;line-height:1.5}
+.consent-note{font-size:11px;color:#666;line-height:1.5}
+.consent-btns{display:flex;gap:8px}
+.consent-btn{padding:6px 18px;font-size:13px;border:1px solid #ddd;border-radius:8px;background:#fff;cursor:pointer;transition:all 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.consent-btn:hover{border-color:#aaa}
+.consent-btn[aria-pressed="true"].yes{background:#EEF5FF;border-color:#378ADD;color:#185FA5}
+.consent-btn[aria-pressed="true"].no{background:#faf9f7;border-color:#aaa}
+
+.prep-section{border:1px solid #D4E8C2;border-radius:8px;background:#F4FAF0;padding:16px 18px}
+.prep-heading{font-size:13px;font-weight:500;color:#3B6D11;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.prep-heading svg{width:15px;height:15px;color:#3B6D11;flex-shrink:0}
+.prep-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.prep-list li{font-size:13px;color:#3B6D11;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
+.prep-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:#3B6D11;flex-shrink:0;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="form-wrap">
+  <p class="form-title">Client intake</p>
+  <form class="elicit" id="intake-form">
+    <div class="elicit-header">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.586 2a1.5 1.5 0 0 1 1.06.44l2.914 2.914a1.5 1.5 0 0 1 .44 1.06V16.5a1.5 1.5 0 0 1-1.5 1.5h-9a1.5 1.5 0 0 1-1.492-1.347L4 16.5v-13A1.5 1.5 0 0 1 5.5 2zM5.5 3a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h-2.5A1.5 1.5 0 0 1 11 5.5V3zm7.04 10.304a.5.5 0 0 1 .92.392c-.295.69-.871 1.304-1.66 1.304-.487 0-.892-.234-1.2-.574-.309.34-.713.574-1.2.574-.486 0-.892-.233-1.2-.574-.31.34-.714.574-1.2.574a.5.5 0 0 1 0-1c.212 0 .52-.18.74-.696l.034-.067a.5.5 0 0 1 .886.067c.221.516.528.696.74.696.213 0 .52-.18.74-.696l.035-.067a.5.5 0 0 1 .885.067c.22.516.527.696.74.696s.519-.18.74-.696m0-4a.5.5 0 0 1 .92.392c-.295.69-.871 1.304-1.66 1.304-.487 0-.892-.234-1.2-.574-.309.34-.713.574-1.2.574-.486 0-.892-.233-1.2-.574-.31.34-.714.574-1.2.574a.5.5 0 0 1 0-1c.212 0 .52-.18.74-.696l.034-.067a.5.5 0 0 1 .886.067c.221.516.528.696.74.696.213 0 .52-.18.74-.696l.035-.067a.5.5 0 0 1 .885.067c.22.516.527.696.74.696s.519-.18.74-.696M12 5.5a.5.5 0 0 0 .5.5h2.293L12 3.207z"/></svg>
+      <span>Concerto Labs — AI coaching intake</span>
+    </div>
+
+    <div class="elicit-body">
+
+      <div class="elicit-group">
+        <label class="elicit-question">What's your primary goal for 1:1 AI coaching? (pick up to 2)</label>
+        <div class="elicit-pills" data-name="primary_goal" data-multi="true">
+          <button type="button" class="elicit-pill" data-value="ship_project">Ship a specific project</button>
+          <button type="button" class="elicit-pill" data-value="learn_ai">Build AI literacy</button>
+          <button type="button" class="elicit-pill" data-value="automate_workflows">Automate my workflows</button>
+          <button type="button" class="elicit-pill" data-value="strategy">Develop an AI strategy</button>
+          <button type="button" class="elicit-pill" data-value="eval_tools">Evaluate tools for my team</button>
+          <button type="button" class="elicit-pill" data-value="open_to_suggestions">Open to suggestions</button>
+          <button type="button" class="elicit-pill" data-value="other_goal" data-other>Something else</button>
+        </div>
+        <input type="text" class="elicit-other" data-for="primary_goal" placeholder="Tell me more" hidden>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <label class="elicit-question">Do you have a specific project or initiative you want to work on?</label>
+        <div class="elicit-pills" data-name="has_project" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="yes_defined">Yes, it's well defined</button>
+          <button type="button" class="elicit-pill" data-value="yes_rough">Yes, but still rough</button>
+          <button type="button" class="elicit-pill" data-value="no_exploring">Not yet — I'm exploring</button>
+        </div>
+      </div>
+
+      <div class="elicit-group">
+        <label class="elicit-question">Briefly describe the project or goal, if you have one in mind:</label>
+        <textarea class="elicit-textarea" data-name="project_description" placeholder="e.g. 'Build an internal knowledge base using AI' or 'Automate our weekly reporting'"></textarea>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <label class="elicit-question">Where are you doing most of your work today?</label>
+        <div class="elicit-pills" data-name="work_environment" data-multi="true">
+          <button type="button" class="elicit-pill" data-value="google_workspace" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 8h14M8 3v14"/></svg>Google Workspace (Docs, Slides, Sheets)
+          </button>
+          <button type="button" class="elicit-pill" data-value="microsoft_365" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>Microsoft 365
+          </button>
+          <button type="button" class="elicit-pill" data-value="notion" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="12" height="14" rx="2"/><path d="M7 7h6M7 10h4"/></svg>Notion
+          </button>
+          <button type="button" class="elicit-pill" data-value="slack" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 3v9M3 7h9M13 11v6M11 13h6"/><circle cx="7" cy="14" r="2"/><circle cx="13" cy="6" r="2"/></svg>Slack
+          </button>
+          <button type="button" class="elicit-pill" data-value="custom_stack" data-other>Custom / other stack</button>
+        </div>
+        <input type="text" class="elicit-other" data-for="work_environment" placeholder="e.g. Airtable, Linear, HubSpot…" hidden>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <label class="elicit-question">How frequently are you using the following AI services?</label>
+        <table class="freq-grid" id="freq-table">
+          <thead>
+            <tr><th></th><th>Usually daily</th><th>1–2x / week</th><th>Not much / not at all</th></tr>
+          </thead>
+          <tbody id="freq-tbody">
+            <tr data-service="ChatGPT"><td>ChatGPT</td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="daily"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
+            </tr>
+            <tr data-service="Claude"><td>Claude</td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="daily"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
+            </tr>
+            <tr data-service="Gemini"><td>Gemini</td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="daily"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
+            </tr>
+            <tr data-service="Microsoft Copilot"><td>Microsoft Copilot</td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="daily"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
+            </tr>
+            <tr data-service="Perplexity"><td>Perplexity</td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="daily"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
+            </tr>
+            <tr data-service="Midjourney / image AI"><td>Midjourney / image AI</td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="daily"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
+              <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="freq-other-row">
+          <input type="text" class="freq-other-input" id="freq-other-name" placeholder="Other tool (e.g. Grok, Runway, Sora…)">
+          <div class="freq-other-btns" id="freq-other-btns">
+            <button type="button" class="freq-btn" data-freq="daily" title="Usually daily"><span class="freq-dot"></span></button>
+            <button type="button" class="freq-btn" data-freq="weekly" title="1–2x / week"><span class="freq-dot"></span></button>
+            <button type="button" class="freq-btn" data-freq="rarely" title="Not much / not at all"><span class="freq-dot"></span></button>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#999;margin:0">Select a frequency above to add the tool to your list.</p>
+      </div>
+
+      <div class="plan-group" id="plan-group">
+        <label class="elicit-question">Are you on a free or paid plan for these tools?</label>
+        <p class="plan-hint">Showing tools you use daily or weekly.</p>
+        <div class="plan-rows" id="plan-rows"></div>
+      </div>
+
+      <hr class="divider" id="plan-divider" style="display:none">
+
+      <div class="elicit-group">
+        <label class="elicit-question">How would you describe your current AI comfort level?</label>
+        <div class="elicit-pills" data-name="ai_comfort" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="curious" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Curious newcomer</span>
+            <span style="font-size:11px;color:#888">I've barely started</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="casual" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Casual user</span>
+            <span style="font-size:11px;color:#888">I use it occasionally</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="regular" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Regular practitioner</span>
+            <span style="font-size:11px;color:#888">Part of my daily flow</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="power_user" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Power user</span>
+            <span style="font-size:11px;color:#888">I build with AI</span>
+          </button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <label class="elicit-question">Do you have a meeting platform preference?</label>
+        <div class="elicit-pills" data-name="meeting_platform" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="google_meet" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="11" height="10" rx="2"/><path d="M13 9l5-3v8l-5-3"/></svg>Google Meet
+          </button>
+          <button type="button" class="elicit-pill" data-value="zoom" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="11" height="10" rx="2"/><path d="M13 9l5-3v8l-5-3"/></svg>Zoom
+          </button>
+          <button type="button" class="elicit-pill" data-value="either">Either is fine</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <label class="elicit-question">How important is confidentiality of your 1:1 coaching to you?</label>
+        <div class="confid-scale">
+          <div class="confid-labels">
+            <span class="confid-label-lo">I don't mind if people know I'm using a human AI coach</span>
+            <span class="confid-label-hi">I don't want people to know I'm using a human AI coach</span>
+          </div>
+          <div class="confid-track" id="confid-track">
+            <button type="button" class="confid-pip" data-val="1">1</button>
+            <button type="button" class="confid-pip" data-val="2">2</button>
+            <button type="button" class="confid-pip" data-val="3">3</button>
+            <button type="button" class="confid-pip" data-val="4">4</button>
+            <button type="button" class="confid-pip" data-val="5">5</button>
+          </div>
+          <p class="confid-value" id="confid-value"></p>
+          <p class="confid-note">NOTE: We would never publish information about you or your sessions under any circumstances without your expressed written permission.</p>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <div class="consent-card">
+          <p class="consent-q">Are you ok with us recording and transcribing your session?</p>
+          <p class="consent-note">We record and transcribe sessions for learning purposes only. We do not use your personal information or any information from your session to train others.</p>
+          <div class="consent-btns">
+            <button type="button" class="consent-btn yes" id="recording-yes" aria-pressed="false">Yes, that's fine</button>
+            <button type="button" class="consent-btn no" id="recording-no" aria-pressed="false">No, please don't</button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <label class="elicit-question">What does success look like for you after this coaching engagement?</label>
+        <textarea class="elicit-textarea" data-name="success_definition" placeholder="e.g. 'A working prototype I can demo to stakeholders' or 'A clear roadmap for AI adoption across my team'"></textarea>
+      </div>
+
+      <div class="elicit-group">
+        <label class="elicit-question">Anything else I should know before we start?</label>
+        <textarea class="elicit-textarea" data-name="additional_context" placeholder="Constraints, timeline, team size, budget — whatever feels relevant"></textarea>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <div class="prep-section">
+          <p class="prep-heading">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 1 1 0 16A8 8 0 0 1 10 2zm0 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM10 6a.75.75 0 0 1 .75.75v3.5l2.25 1.3a.75.75 0 1 1-.75 1.3l-2.625-1.516A.75.75 0 0 1 9.25 10.75v-4A.75.75 0 0 1 10 6z"/></svg>
+            Preparing for your session
+          </p>
+          <ul class="prep-list">
+            <li>Find a stable wifi connection — a strong signal keeps the session smooth and lets you share your screen without interruption.</li>
+            <li>Choose a quiet, private space where you feel comfortable speaking freely. Background noise and interruptions can break your flow.</li>
+            <li>Have your laptop or desktop ready. You'll get more out of the session if you can try things in real time alongside your coach.</li>
+            <li>If you're working toward a specific project, have any relevant files, tools, or accounts open and ready to go.</li>
+            <li>Jot down one or two things you most want to walk away with. Even a rough intention helps focus the session.</li>
+            <li>This session is entirely personalized for you — feel free to ask us to slow down, go deeper, or skip ahead at any point. Your pace is the right pace.</li>
+            <li>There are no wrong questions. If something isn't clicking, say so — that's exactly the kind of moment coaching is built for.</li>
+            <li>You don't need to prepare anything formal. Show up curious. That's enough.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="elicit-footer">
+      <button type="button" class="elicit-skip" id="skip-btn">Skip</button>
+      <button type="button" class="elicit-submit" id="submit-btn">Submit intake</button>
+    </div>
+  </form>
+</div>
+
+<script>
+(function(){
+  var form=document.getElementById('intake-form');
+  var planGroup=document.getElementById('plan-group');
+  var planRowsEl=document.getElementById('plan-rows');
+  var planDivider=document.getElementById('plan-divider');
+  var planState={};
+  var confidValue=null;
+  var otherFreqState=null;
+  var confidLabels={1:'I don\'t mind if people know I\'m using a human AI coach',2:'Slight preference for privacy',3:'Somewhat important to me',4:'Very important to me',5:'I don\'t want people to know I\'m using a human AI coach'};
+
+  var recYesBtn=document.getElementById('recording-yes');
+  var recNoBtn=document.getElementById('recording-no');
+  recYesBtn.addEventListener('click',function(){recYesBtn.setAttribute('aria-pressed','true');recNoBtn.setAttribute('aria-pressed','false');});
+  recNoBtn.addEventListener('click',function(){recNoBtn.setAttribute('aria-pressed','true');recYesBtn.setAttribute('aria-pressed','false');});
+
+  document.getElementById('confid-track').querySelectorAll('.confid-pip').forEach(function(pip){
+    pip.addEventListener('click',function(){
+      document.getElementById('confid-track').querySelectorAll('.confid-pip').forEach(function(p){p.classList.remove('selected');});
+      pip.classList.add('selected');
+      confidValue=parseInt(pip.dataset.val);
+      var el=document.getElementById('confid-value');
+      el.textContent=confidLabels[confidValue];
+      el.classList.add('active');
+    });
+  });
+
+  var fobtns=document.getElementById('freq-other-btns').querySelectorAll('.freq-btn');
+  fobtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var name=document.getElementById('freq-other-name').value.trim();
+      if(!name){document.getElementById('freq-other-name').focus();return;}
+      fobtns.forEach(function(b){b.setAttribute('aria-pressed','false');});
+      btn.setAttribute('aria-pressed','true');
+      otherFreqState={name:name,freq:btn.dataset.freq};
+      updatePlanSection();
+    });
+  });
+  document.getElementById('freq-other-name').addEventListener('input',function(){
+    if(!this.value.trim()){fobtns.forEach(function(b){b.setAttribute('aria-pressed','false');});otherFreqState=null;updatePlanSection();}
+  });
+
+  form.querySelectorAll('.elicit-pills').forEach(function(group){
+    var multi=group.dataset.multi==='true';
+    group.querySelectorAll('.elicit-pill').forEach(function(pill){
+      pill.addEventListener('click',function(){
+        if(!multi) group.querySelectorAll('.elicit-pill').forEach(function(p){p.setAttribute('aria-pressed','false');});
+        var pressed=pill.getAttribute('aria-pressed')==='true';
+        pill.setAttribute('aria-pressed',pressed?'false':'true');
+        if(pill.dataset.other!==undefined){var o=form.querySelector('.elicit-other[data-for="'+group.dataset.name+'"]');if(o){o.hidden=pressed;if(!pressed)o.focus();}}
+      });
+    });
+  });
+
+  function updatePlanSection(){
+    var active=[];
+    document.getElementById('freq-tbody').querySelectorAll('tr').forEach(function(row){
+      var sel=row.querySelector('.freq-btn[aria-pressed="true"]');
+      if(sel&&(sel.dataset.freq==='daily'||sel.dataset.freq==='weekly')) active.push(row.dataset.service);
+    });
+    if(otherFreqState&&(otherFreqState.freq==='daily'||otherFreqState.freq==='weekly')) active.push(otherFreqState.name);
+    if(active.length===0){planGroup.classList.remove('visible');planDivider.style.display='none';return;}
+    planGroup.classList.add('visible');planDivider.style.display='';
+    planRowsEl.innerHTML='';
+    active.forEach(function(service){
+      var row=document.createElement('div');row.className='plan-row';
+      var label=document.createElement('span');label.className='plan-label';label.textContent=service;row.appendChild(label);
+      var opts=document.createElement('div');opts.className='plan-options';
+      ['Free','Paid / Pro','Team / Enterprise','Not sure'].forEach(function(tier){
+        var btn=document.createElement('button');btn.type='button';btn.className='plan-btn';btn.textContent=tier;
+        if(planState[service]===tier) btn.setAttribute('aria-pressed','true');
+        btn.addEventListener('click',function(){opts.querySelectorAll('.plan-btn').forEach(function(b){b.setAttribute('aria-pressed','false');});btn.setAttribute('aria-pressed','true');planState[service]=tier;});
+        opts.appendChild(btn);
+      });
+      row.appendChild(opts);planRowsEl.appendChild(row);
+    });
+  }
+
+  document.getElementById('freq-tbody').querySelectorAll('tr').forEach(function(row){
+    row.querySelectorAll('.freq-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        row.querySelectorAll('.freq-btn').forEach(function(b){b.setAttribute('aria-pressed','false');});
+        btn.setAttribute('aria-pressed','true');updatePlanSection();
+      });
+    });
+  });
+
+  document.getElementById('submit-btn').addEventListener('click',function(){
+    alert('Thank you! Your intake has been submitted. We\'ll be in touch shortly to confirm your session.');
+  });
+  document.getElementById('skip-btn').addEventListener('click',function(){
+    if(confirm('Skip the intake form and proceed with defaults?')) alert('Got it — we\'ll cover the details at the start of your session.');
+  });
+})();
+</script>
+</body>
+</html>
