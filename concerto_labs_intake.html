@@ -236,7 +236,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <label class="elicit-question">How frequently are you using the following AI services?</label>
         <table class="freq-grid" id="freq-table">
           <thead>
-            <tr><th></th><th>Usually daily</th><th>1–2x / week</th><th>Not much / not at all</th></tr>
+            <tr><th></th><th>Daily</th><th>1–2x / week</th><th>Not much / not at all</th></tr>
           </thead>
           <tbody id="freq-tbody">
             <tr data-service="ChatGPT"><td>ChatGPT</td>
@@ -249,7 +249,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
               <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
               <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
             </tr>
-            <tr data-service="Gemini"><td>Gemini</td>
+            <tr data-service="Google (Gemini, NotebookLM)"><td>Google (Gemini, NotebookLM)</td>
               <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="daily"><span class="freq-dot"></span></button></div></td>
               <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="weekly"><span class="freq-dot"></span></button></div></td>
               <td><div class="freq-cell"><button type="button" class="freq-btn" data-freq="rarely"><span class="freq-dot"></span></button></div></td>
@@ -274,7 +274,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="freq-other-row">
           <input type="text" class="freq-other-input" id="freq-other-name" placeholder="Other tool (e.g. Grok, Runway, Sora…)">
           <div class="freq-other-btns" id="freq-other-btns">
-            <button type="button" class="freq-btn" data-freq="daily" title="Usually daily"><span class="freq-dot"></span></button>
+            <button type="button" class="freq-btn" data-freq="daily" title="Daily"><span class="freq-dot"></span></button>
             <button type="button" class="freq-btn" data-freq="weekly" title="1–2x / week"><span class="freq-dot"></span></button>
             <button type="button" class="freq-btn" data-freq="rarely" title="Not much / not at all"><span class="freq-dot"></span></button>
           </div>
@@ -554,12 +554,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     document.getElementById('freq-tbody').querySelectorAll('tr').forEach(function(row){
       var sel=row.querySelector('.freq-btn[aria-pressed="true"]');
       if(sel){
-        var freq=sel.dataset.freq==='daily'?'Usually daily':sel.dataset.freq==='weekly'?'1–2x/week':'Not much/not at all';
+        var freq=sel.dataset.freq==='daily'?'Daily':sel.dataset.freq==='weekly'?'1–2x/week':'Not much/not at all';
         lines.push(row.dataset.service+': '+freq);
       }
     });
     if(otherFreqState){
-      var freq=otherFreqState.freq==='daily'?'Usually daily':otherFreqState.freq==='weekly'?'1–2x/week':'Not much/not at all';
+      var freq=otherFreqState.freq==='daily'?'Daily':otherFreqState.freq==='weekly'?'1–2x/week':'Not much/not at all';
       lines.push(otherFreqState.name+': '+freq);
     }
     return lines.join('\n');
