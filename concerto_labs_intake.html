@@ -121,6 +121,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
     <div class="elicit-body" id="elicit-body">
 
+      <!-- ── SECTION 1: Who you are ── -->
       <div class="elicit-group">
         <label class="elicit-question">Your name &amp; email</label>
         <div class="contact-fields">
@@ -135,43 +136,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         </div>
         <div class="contact-fields" style="margin-top:8px">
           <div class="contact-field">
-            <label class="contact-label" for="field-email">Email address <span style="color:#e05555">*</span></label>
+            <label class="contact-label" for="field-email">Work email <span style="color:#e05555">*</span></label>
             <input type="email" class="contact-input" id="field-email" placeholder="you@company.com">
           </div>
         </div>
-      </div>
-
-      <hr class="divider">
-
-      <div class="elicit-group">
-        <label class="elicit-question">What's your primary goal for 1:1 AI coaching? (pick up to 2)</label>
-        <div class="elicit-pills" data-name="primary_goal" data-multi="true">
-          <button type="button" class="elicit-pill" data-value="ship_project">Ship a specific project</button>
-          <button type="button" class="elicit-pill" data-value="learn_ai">Build AI literacy</button>
-          <button type="button" class="elicit-pill" data-value="automate_workflows">Automate my workflows</button>
-          <button type="button" class="elicit-pill" data-value="strategy">Develop an AI strategy</button>
-          <button type="button" class="elicit-pill" data-value="eval_tools">Evaluate tools for my team</button>
-          <button type="button" class="elicit-pill" data-value="open_to_suggestions">Open to suggestions</button>
-          <button type="button" class="elicit-pill" data-value="other_goal" data-other>Something else</button>
-        </div>
-        <input type="text" class="elicit-other" data-for="primary_goal" placeholder="Tell me more" hidden>
-      </div>
-
-      <hr class="divider">
-
-      <div class="elicit-group">
-        <label class="elicit-question">Do you have a specific project or initiative you want to work on?</label>
-        <div class="elicit-pills" data-name="has_project" data-multi="false">
-          <button type="button" class="elicit-pill" data-value="yes_defined">Yes, it's well defined</button>
-          <button type="button" class="elicit-pill" data-value="yes_rough">Yes, but still rough</button>
-          <button type="button" class="elicit-pill" data-value="know_problem">I know the problem, not the solution</button>
-          <button type="button" class="elicit-pill" data-value="no_exploring">Not yet — I'm exploring</button>
-        </div>
-      </div>
-
-      <div class="elicit-group">
-        <label class="elicit-question">Briefly describe the project or goal, if you have one in mind:</label>
-        <textarea class="elicit-textarea" data-name="project_description" placeholder="e.g. 'Build an internal knowledge base using AI' or 'Automate our weekly reporting'"></textarea>
       </div>
 
       <hr class="divider">
@@ -202,28 +170,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         </div>
       </div>
 
+      <div class="elicit-group">
+        <label class="elicit-question">How would you describe your current AI comfort level?</label>
+        <div class="elicit-pills" data-name="ai_comfort" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="curious" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Curious newcomer</span>
+            <span style="font-size:11px;color:#888">I've barely started</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="casual" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Casual user</span>
+            <span style="font-size:11px;color:#888">I use it occasionally</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="regular" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Regular practitioner</span>
+            <span style="font-size:11px;color:#888">Part of my daily flow</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="power_user" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
+            <span style="font-size:13px;font-weight:500">Power user</span>
+            <span style="font-size:11px;color:#888">I build with AI</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SECTION 2: What you want ── -->
       <hr class="divider">
 
       <div class="elicit-group">
-        <label class="elicit-question">Where are you doing most of your work today?</label>
-        <div class="elicit-pills" data-name="work_environment" data-multi="true">
-          <button type="button" class="elicit-pill" data-value="google_workspace" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 8h14M8 3v14"/></svg>Google Workspace (Docs, Slides, Sheets)
-          </button>
-          <button type="button" class="elicit-pill" data-value="microsoft_365" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>Microsoft 365
-          </button>
-          <button type="button" class="elicit-pill" data-value="notion" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="12" height="14" rx="2"/><path d="M7 7h6M7 10h4"/></svg>Notion
-          </button>
-          <button type="button" class="elicit-pill" data-value="slack" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 3v9M3 7h9M13 11v6M11 13h6"/><circle cx="7" cy="14" r="2"/><circle cx="13" cy="6" r="2"/></svg>Slack
-          </button>
-          <button type="button" class="elicit-pill" data-value="custom_stack" data-other>Custom / other stack</button>
+        <label class="elicit-question">What's your primary goal for 1:1 AI coaching? (pick up to 2)</label>
+        <div class="elicit-pills" data-name="primary_goal" data-multi="true">
+          <button type="button" class="elicit-pill" data-value="ship_project">Ship a specific project</button>
+          <button type="button" class="elicit-pill" data-value="learn_ai">Build AI literacy</button>
+          <button type="button" class="elicit-pill" data-value="automate_workflows">Automate my workflows</button>
+          <button type="button" class="elicit-pill" data-value="strategy">Develop an AI strategy</button>
+          <button type="button" class="elicit-pill" data-value="eval_tools">Evaluate tools for my team</button>
+          <button type="button" class="elicit-pill" data-value="open_to_suggestions">Open to suggestions</button>
+          <button type="button" class="elicit-pill" data-value="other_goal" data-other>Something else</button>
         </div>
-        <input type="text" class="elicit-other" data-for="work_environment" placeholder="e.g. Airtable, Linear, HubSpot…" hidden>
+        <input type="text" class="elicit-other" data-for="primary_goal" placeholder="Tell me more" hidden>
       </div>
 
+      <div class="elicit-group">
+        <label class="elicit-question">Do you have a specific project or initiative you want to work on?</label>
+        <div class="elicit-pills" data-name="has_project" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="yes_defined">Yes, it's well defined</button>
+          <button type="button" class="elicit-pill" data-value="yes_rough">Yes, but still rough</button>
+          <button type="button" class="elicit-pill" data-value="know_problem">I know the problem, not the solution</button>
+          <button type="button" class="elicit-pill" data-value="no_exploring">Not yet — I'm exploring</button>
+        </div>
+      </div>
+
+      <div class="elicit-group">
+        <label class="elicit-question">Briefly describe the project or goal, if you have one in mind:</label>
+        <textarea class="elicit-textarea" data-name="project_description" placeholder="e.g. 'Build an internal knowledge base using AI' or 'Automate our weekly reporting'"></textarea>
+      </div>
+
+      <div class="elicit-group">
+        <label class="elicit-question">What does success look like for you after this coaching engagement?</label>
+        <textarea class="elicit-textarea" data-name="success_definition" placeholder="e.g. 'A working prototype I can demo to stakeholders' or 'A clear roadmap for AI adoption across my team'"></textarea>
+      </div>
+
+      <!-- ── SECTION 3: Your AI environment ── -->
       <hr class="divider">
 
       <div class="elicit-group">
@@ -285,6 +291,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <hr class="divider" id="plan-divider" style="display:none">
 
       <div class="elicit-group">
+        <label class="elicit-question">Where are you doing most of your work today?</label>
+        <div class="elicit-pills" data-name="work_environment" data-multi="true">
+          <button type="button" class="elicit-pill" data-value="google_workspace" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 8h14M8 3v14"/></svg>Google Workspace (Docs, Slides, Sheets)
+          </button>
+          <button type="button" class="elicit-pill" data-value="microsoft_365" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>Microsoft 365
+          </button>
+          <button type="button" class="elicit-pill" data-value="notion" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="12" height="14" rx="2"/><path d="M7 7h6M7 10h4"/></svg>Notion
+          </button>
+          <button type="button" class="elicit-pill" data-value="slack" style="display:flex;align-items:center;gap:8px;padding:8px 14px">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 3v9M3 7h9M13 11v6M11 13h6"/><circle cx="7" cy="14" r="2"/><circle cx="13" cy="6" r="2"/></svg>Slack
+          </button>
+          <button type="button" class="elicit-pill" data-value="custom_stack" data-other>Custom / other stack</button>
+        </div>
+        <input type="text" class="elicit-other" data-for="work_environment" placeholder="e.g. Airtable, Linear, HubSpot…" hidden>
+      </div>
+
+      <div class="elicit-group">
         <label class="elicit-question">When it comes to AI tools, which best describes your situation?</label>
         <div class="elicit-pills" data-name="tool_constraints" data-multi="false">
           <button type="button" class="elicit-pill" data-value="stay_approved" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px">
@@ -311,30 +337,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         </div>
       </div>
 
-      <hr class="divider">
-
-      <div class="elicit-group">
-        <label class="elicit-question">How would you describe your current AI comfort level?</label>
-        <div class="elicit-pills" data-name="ai_comfort" data-multi="false">
-          <button type="button" class="elicit-pill" data-value="curious" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
-            <span style="font-size:13px;font-weight:500">Curious newcomer</span>
-            <span style="font-size:11px;color:#888">I've barely started</span>
-          </button>
-          <button type="button" class="elicit-pill" data-value="casual" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
-            <span style="font-size:13px;font-weight:500">Casual user</span>
-            <span style="font-size:11px;color:#888">I use it occasionally</span>
-          </button>
-          <button type="button" class="elicit-pill" data-value="regular" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
-            <span style="font-size:13px;font-weight:500">Regular practitioner</span>
-            <span style="font-size:11px;color:#888">Part of my daily flow</span>
-          </button>
-          <button type="button" class="elicit-pill" data-value="power_user" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:130px">
-            <span style="font-size:13px;font-weight:500">Power user</span>
-            <span style="font-size:11px;color:#888">I build with AI</span>
-          </button>
-        </div>
-      </div>
-
+      <!-- ── SECTION 4: Logistics ── -->
       <hr class="divider">
 
       <div class="elicit-group">
@@ -349,8 +352,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <button type="button" class="elicit-pill" data-value="either">Either is fine</button>
         </div>
       </div>
-
-      <hr class="divider">
 
       <div class="elicit-group">
         <label class="elicit-question">How important is confidentiality of your 1:1 coaching to you?</label>
@@ -371,12 +372,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         </div>
       </div>
 
-      <hr class="divider">
-
       <div class="elicit-group">
         <div class="consent-card">
           <p class="consent-q">Are you ok with us recording and transcribing your session?</p>
-          <p class="consent-note">We record and transcribe sessions for learning purposes only. We do not use your personal information or any information from your session to train others.</p>
+          <p class="consent-note">We record and transcribe sessions to support learning outcomes and continuously improve the quality of our coaching. Any personal experiences or information shared during training are treated as confidential and are a foundational part of our private 1:1 coaching environment.</p>
           <div class="consent-btns">
             <button type="button" class="consent-btn yes" id="recording-yes" aria-pressed="false">Yes, that's fine</button>
             <button type="button" class="consent-btn no" id="recording-no" aria-pressed="false">No, please don't</button>
@@ -384,16 +383,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         </div>
       </div>
 
+      <!-- ── SECTION 5: Wrap up ── -->
       <hr class="divider">
-
-      <div class="elicit-group">
-        <label class="elicit-question">What does success look like for you after this coaching engagement?</label>
-        <textarea class="elicit-textarea" data-name="success_definition" placeholder="e.g. 'A working prototype I can demo to stakeholders' or 'A clear roadmap for AI adoption across my team'"></textarea>
-      </div>
 
       <div class="elicit-group">
         <label class="elicit-question">Anything else I should know before we start?</label>
         <textarea class="elicit-textarea" data-name="additional_context" placeholder="Constraints, timeline, team size, budget — whatever feels relevant"></textarea>
+      </div>
+
+      <div class="elicit-group">
+        <label class="elicit-question">Would you like me to email you a copy of your responses?</label>
+        <div class="elicit-pills" data-name="email_copy" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="email_yes" aria-pressed="true">Yes, please</button>
+          <button type="button" class="elicit-pill" data-value="email_no">No thanks</button>
+        </div>
       </div>
 
       <hr class="divider">
@@ -419,16 +422,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
     </div>
 
-    <div class="copy-row" id="copy-row">
-      <input type="checkbox" id="send-copy" checked>
-      <label for="send-copy">Send me a copy of my intake summary</label>
-      <span class="copy-status" id="copy-status">✓ Sent</span>
-    </div>
-
     <div class="elicit-footer" id="elicit-footer">
       <span class="submit-error" id="submit-error">Please enter a valid email address.</span>
       <button type="button" class="elicit-skip" id="skip-btn">Skip</button>
-      <button type="button" class="elicit-submit" id="submit-btn">Submit intake</button>
+      <button type="button" class="elicit-submit" id="submit-btn">Submit</button>
     </div>
   </form>
 </div>
@@ -634,7 +631,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     submitBtn.textContent='Submitting…';
     submitBtn.disabled=true;
 
-    var wantsCopy = document.getElementById('send-copy').checked;
+    var emailCopyPill = form.querySelector('.elicit-pills[data-name="email_copy"] .elicit-pill[aria-pressed="true"]');
+    var wantsCopy = emailCopyPill ? emailCopyPill.dataset.value === 'email_yes' : false;
 
     fetch(HS_ENDPOINT,{
       method:'POST',
@@ -660,7 +658,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         }
         document.getElementById('elicit-body').style.display='none';
         document.getElementById('elicit-footer').style.display='none';
-        document.getElementById('copy-row').style.display='none';
         document.getElementById('success-msg').style.display='flex';
       } else {
         return res.text().then(function(t){throw new Error(t);});
