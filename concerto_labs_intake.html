@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Concerto Labs — AI Coaching Intake</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;min-height:100vh;padding:32px 16px;color:#1a1a18}
@@ -82,6 +83,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .prep-list{list-style:none;display:flex;flex-direction:column;gap:7px}
 .prep-list li{font-size:13px;color:#3B6D11;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
 .prep-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:#3B6D11;flex-shrink:0;margin-top:6px}
+
+.contact-fields{display:flex;gap:12px;flex-wrap:wrap}
+.contact-field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:200px}
+.contact-label{font-size:12px;font-weight:500;color:#555}
+.contact-input{padding:8px 12px;font-size:13px;border:1px solid #ddd;border-radius:8px;font-family:inherit}
+.contact-input:focus{outline:none;border-color:#378ADD}
+.contact-input.error{border-color:#e05555}
+
+.submit-error{font-size:12px;color:#e05555;text-align:right;display:none}
+.submit-success{display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 24px;text-align:center}
+.submit-success-icon{width:48px;height:48px;background:#EEF5FF;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.submit-success-icon svg{width:24px;height:24px;color:#378ADD}
+.submit-success h2{font-size:16px;font-weight:600;color:#1a1a18}
+.submit-success p{font-size:13px;color:#666;line-height:1.6;max-width:400px}
+
+.copy-row{display:flex;align-items:center;gap:8px;padding:10px 20px;border-top:1px solid #ece9e2;background:#faf9f7}
+.copy-row input[type="checkbox"]{width:15px;height:15px;accent-color:#378ADD;cursor:pointer;flex-shrink:0}
+.copy-row label{font-size:12px;color:#555;cursor:pointer;line-height:1.4}
+.copy-status{font-size:11px;color:#378ADD;display:none;margin-left:4px}
 </style>
 </head>
 <body>
@@ -93,7 +113,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <span>Concerto Labs — AI coaching intake</span>
     </div>
 
-    <div class="elicit-body">
+    <div class="submit-success" id="success-msg">
+      <div class="submit-success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h2>You're all set!</h2>
+      <p>Thank you for completing the intake form. We'll review your answers and be in touch shortly to confirm your first session.</p>
+    </div>
+
+    <div class="elicit-body" id="elicit-body">
+
+      <div class="elicit-group">
+        <label class="elicit-question">Your name &amp; email</label>
+        <div class="contact-fields">
+          <div class="contact-field">
+            <label class="contact-label" for="field-firstname">First name</label>
+            <input type="text" class="contact-input" id="field-firstname" placeholder="Andrea">
+          </div>
+          <div class="contact-field">
+            <label class="contact-label" for="field-lastname">Last name</label>
+            <input type="text" class="contact-input" id="field-lastname" placeholder="Lin">
+          </div>
+        </div>
+        <div class="contact-fields" style="margin-top:8px">
+          <div class="contact-field">
+            <label class="contact-label" for="field-email">Email address <span style="color:#e05555">*</span></label>
+            <input type="email" class="contact-input" id="field-email" placeholder="you@company.com">
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
 
       <div class="elicit-group">
         <label class="elicit-question">What's your primary goal for 1:1 AI coaching? (pick up to 2)</label>
@@ -116,6 +164,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="elicit-pills" data-name="has_project" data-multi="false">
           <button type="button" class="elicit-pill" data-value="yes_defined">Yes, it's well defined</button>
           <button type="button" class="elicit-pill" data-value="yes_rough">Yes, but still rough</button>
+          <button type="button" class="elicit-pill" data-value="know_problem">I know the problem, not the solution</button>
           <button type="button" class="elicit-pill" data-value="no_exploring">Not yet — I'm exploring</button>
         </div>
       </div>
@@ -123,6 +172,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="elicit-group">
         <label class="elicit-question">Briefly describe the project or goal, if you have one in mind:</label>
         <textarea class="elicit-textarea" data-name="project_description" placeholder="e.g. 'Build an internal knowledge base using AI' or 'Automate our weekly reporting'"></textarea>
+      </div>
+
+      <hr class="divider">
+
+      <div class="elicit-group">
+        <label class="elicit-question">What's your primary focus right now?</label>
+        <div class="elicit-pills" data-name="primary_focus" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="personal_productivity" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:140px">
+            <span style="font-size:13px;font-weight:500">Personal productivity</span>
+            <span style="font-size:11px;color:#888">Improving my own output</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="leadership_effectiveness" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:140px">
+            <span style="font-size:13px;font-weight:500">Leadership effectiveness</span>
+            <span style="font-size:11px;color:#888">How I lead, decide, communicate</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="team_enablement" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:140px">
+            <span style="font-size:13px;font-weight:500">Team enablement</span>
+            <span style="font-size:11px;color:#888">Getting my team up to speed</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="company_adoption" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:140px">
+            <span style="font-size:13px;font-weight:500">Company-wide AI adoption</span>
+            <span style="font-size:11px;color:#888">Driving org-level change</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="exploring_possibilities" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px;min-width:140px">
+            <span style="font-size:13px;font-weight:500">Exploring possibilities</span>
+            <span style="font-size:11px;color:#888">Not sure yet — open to it</span>
+          </button>
+        </div>
       </div>
 
       <hr class="divider">
@@ -206,6 +283,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       </div>
 
       <hr class="divider" id="plan-divider" style="display:none">
+
+      <div class="elicit-group">
+        <label class="elicit-question">When it comes to AI tools, which best describes your situation?</label>
+        <div class="elicit-pills" data-name="tool_constraints" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="stay_approved" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px">
+            <span style="font-size:13px;font-weight:500">Work within approved tools</span>
+            <span style="font-size:11px;color:#888">I need to stay inside what my org has sanctioned</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="open_exploring" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px">
+            <span style="font-size:13px;font-weight:500">Open to exploring</span>
+            <span style="font-size:11px;color:#888">I can try new tools if they're the right fit</span>
+          </button>
+          <button type="button" class="elicit-pill" data-value="not_sure_tools" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px">
+            <span style="font-size:13px;font-weight:500">Not sure yet</span>
+            <span style="font-size:11px;color:#888">Haven't thought about it</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="elicit-group">
+        <label class="elicit-question">Does your company have an AI use policy in place?</label>
+        <div class="elicit-pills" data-name="ai_policy" data-multi="false">
+          <button type="button" class="elicit-pill" data-value="policy_yes">Yes</button>
+          <button type="button" class="elicit-pill" data-value="policy_no">No</button>
+          <button type="button" class="elicit-pill" data-value="policy_unknown">I don't know</button>
+        </div>
+      </div>
+
+      <hr class="divider">
 
       <div class="elicit-group">
         <label class="elicit-question">How would you describe your current AI comfort level?</label>
@@ -313,7 +419,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
     </div>
 
-    <div class="elicit-footer">
+    <div class="copy-row" id="copy-row">
+      <input type="checkbox" id="send-copy" checked>
+      <label for="send-copy">Send me a copy of my intake summary</label>
+      <span class="copy-status" id="copy-status">✓ Sent</span>
+    </div>
+
+    <div class="elicit-footer" id="elicit-footer">
+      <span class="submit-error" id="submit-error">Please enter a valid email address.</span>
       <button type="button" class="elicit-skip" id="skip-btn">Skip</button>
       <button type="button" class="elicit-submit" id="submit-btn">Submit intake</button>
     </div>
@@ -322,6 +435,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <script>
 (function(){
+  // ── HubSpot ──────────────────────────────────────────────
+  var PORTAL_ID='244695861';
+  var FORM_GUID='58cb338d-45aa-4ab2-8f53-145074d318b6';
+
+  // ── EmailJS (fill in after setting up emailjs.com) ───────
+  var EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // Account → API Keys
+  var EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // Email Services tab
+  var EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // Email Templates tab
+  // ────────────────────────────────────────────────────────
+
+  if(EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY'){
+    emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
+  }
+  var HS_ENDPOINT='https://api.hsforms.com/submissions/v3/integration/submit/'+PORTAL_ID+'/'+FORM_GUID;
+
   var form=document.getElementById('intake-form');
   var planGroup=document.getElementById('plan-group');
   var planRowsEl=document.getElementById('plan-rows');
@@ -329,7 +457,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   var planState={};
   var confidValue=null;
   var otherFreqState=null;
-  var confidLabels={1:'I don\'t mind if people know I\'m using a human AI coach',2:'Slight preference for privacy',3:'Somewhat important to me',4:'Very important to me',5:'I don\'t want people to know I\'m using a human AI coach'};
+  var confidLabels={1:'Not important',2:'Slight preference for privacy',3:'Somewhat important',4:'Very important',5:'Extremely important'};
 
   var recYesBtn=document.getElementById('recording-yes');
   var recNoBtn=document.getElementById('recording-no');
@@ -407,11 +535,152 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     });
   });
 
+  function getPillValues(name){
+    var g=form.querySelector('.elicit-pills[data-name="'+name+'"]');
+    if(!g) return '';
+    var vals=[];
+    g.querySelectorAll('.elicit-pill[aria-pressed="true"]').forEach(function(p){
+      if(p.dataset.other!==undefined){
+        var o=form.querySelector('.elicit-other[data-for="'+name+'"]');
+        if(o&&o.value.trim()) vals.push(o.value.trim());
+      } else {
+        // Use only the first span (title) if the pill has child spans; otherwise use full text
+        var firstSpan=p.querySelector('span');
+        vals.push(firstSpan ? firstSpan.textContent.trim() : p.textContent.trim());
+      }
+    });
+    return vals.join(', ');
+  }
+
+  function getFreqSummary(){
+    var lines=[];
+    document.getElementById('freq-tbody').querySelectorAll('tr').forEach(function(row){
+      var sel=row.querySelector('.freq-btn[aria-pressed="true"]');
+      if(sel){
+        var freq=sel.dataset.freq==='daily'?'Usually daily':sel.dataset.freq==='weekly'?'1–2x/week':'Not much/not at all';
+        lines.push(row.dataset.service+': '+freq);
+      }
+    });
+    if(otherFreqState){
+      var freq=otherFreqState.freq==='daily'?'Usually daily':otherFreqState.freq==='weekly'?'1–2x/week':'Not much/not at all';
+      lines.push(otherFreqState.name+': '+freq);
+    }
+    return lines.join('\n');
+  }
+
+  function getPlanSummary(){
+    var lines=[];
+    Object.keys(planState).forEach(function(svc){
+      lines.push(svc+': '+planState[svc]);
+    });
+    return lines.join('\n');
+  }
+
+  function buildMessage(){
+    var parts=[];
+    parts.push('=== Concerto Labs AI Coaching Intake ===\n');
+    var goals=getPillValues('primary_goal');if(goals) parts.push('Primary Goal(s): '+goals);
+    var proj=getPillValues('has_project');if(proj) parts.push('Project Status: '+proj);
+    var projDesc=form.querySelector('[data-name="project_description"]');if(projDesc&&projDesc.value.trim()) parts.push('Project Description: '+projDesc.value.trim());
+    var focus=getPillValues('primary_focus');if(focus) parts.push('Primary Focus: '+focus);
+    var env=getPillValues('work_environment');if(env) parts.push('Work Environment: '+env);
+    var freq=getFreqSummary();if(freq) parts.push('AI Frequency:\n'+freq);
+    var plans=getPlanSummary();if(plans) parts.push('Plan Tiers:\n'+plans);
+    var toolConstraints=getPillValues('tool_constraints');if(toolConstraints) parts.push('Tool Constraints: '+toolConstraints);
+    var aiPolicy=getPillValues('ai_policy');if(aiPolicy) parts.push('AI Use Policy: '+aiPolicy);
+    var comfort=getPillValues('ai_comfort');if(comfort) parts.push('AI Comfort Level: '+comfort);
+    var mtg=getPillValues('meeting_platform');if(mtg) parts.push('Meeting Platform: '+mtg);
+    if(confidValue) parts.push('Confidentiality Importance: '+confidValue+'/5 — '+confidLabels[confidValue]);
+    var recYes=recYesBtn.getAttribute('aria-pressed')==='true';
+    var recNo=recNoBtn.getAttribute('aria-pressed')==='true';
+    if(recYes||recNo) parts.push('Recording Consent: '+(recYes?'Yes':'No'));
+    var success=form.querySelector('[data-name="success_definition"]');if(success&&success.value.trim()) parts.push('Success Definition: '+success.value.trim());
+    var extra=form.querySelector('[data-name="additional_context"]');if(extra&&extra.value.trim()) parts.push('Additional Context: '+extra.value.trim());
+    return parts.join('\n');
+  }
+
   document.getElementById('submit-btn').addEventListener('click',function(){
-    alert('Thank you! Your intake has been submitted. We\'ll be in touch shortly to confirm your session.');
+    var emailEl=document.getElementById('field-email');
+    var email=emailEl.value.trim();
+    var errEl=document.getElementById('submit-error');
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      emailEl.classList.add('error');
+      errEl.style.display='block';
+      emailEl.scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+    emailEl.classList.remove('error');
+    errEl.style.display='none';
+
+    var firstname=document.getElementById('field-firstname').value.trim();
+    var lastname=document.getElementById('field-lastname').value.trim();
+    var message=buildMessage();
+
+    var payload={
+      submittedAt:Date.now(),
+      fields:[
+        {name:'email',value:email},
+        {name:'firstname',value:firstname},
+        {name:'lastname',value:lastname},
+        {name:'message',value:message}
+      ],
+      context:{
+        pageUri:window.location.href,
+        pageName:'Concerto Labs AI Coaching Intake'
+      }
+    };
+
+    var submitBtn=document.getElementById('submit-btn');
+    submitBtn.textContent='Submitting…';
+    submitBtn.disabled=true;
+
+    var wantsCopy = document.getElementById('send-copy').checked;
+
+    fetch(HS_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    }).then(function(res){
+      if(res.ok){
+        // Optionally send summary email via EmailJS
+        if(wantsCopy && EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID'){
+          var name = (firstname || 'there');
+          emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+            to_email:   email,
+            to_name:    name,
+            from_name:  'Concerto Labs',
+            reply_to:   'hello@concertolabs.ai',
+            subject:    'Your Concerto Labs intake summary',
+            message:    message
+          }).then(function(){
+            document.getElementById('copy-status').style.display='inline';
+          }).catch(function(e){
+            console.warn('EmailJS send failed:',e);
+          });
+        }
+        document.getElementById('elicit-body').style.display='none';
+        document.getElementById('elicit-footer').style.display='none';
+        document.getElementById('copy-row').style.display='none';
+        document.getElementById('success-msg').style.display='flex';
+      } else {
+        return res.text().then(function(t){throw new Error(t);});
+      }
+    }).catch(function(err){
+      submitBtn.textContent='Submit intake';
+      submitBtn.disabled=false;
+      errEl.textContent='Submission failed — please try again or email us directly.';
+      errEl.style.display='block';
+      console.error('HubSpot submission error:',err);
+    });
   });
+
   document.getElementById('skip-btn').addEventListener('click',function(){
-    if(confirm('Skip the intake form and proceed with defaults?')) alert('Got it — we\'ll cover the details at the start of your session.');
+    if(confirm('Skip the intake form? We\'ll cover the details at the start of your session.')) {
+      document.getElementById('elicit-body').style.display='none';
+      document.getElementById('elicit-footer').style.display='none';
+      document.getElementById('copy-row').style.display='none';
+      document.getElementById('success-msg').style.display='flex';
+    }
   });
 })();
 </script>
