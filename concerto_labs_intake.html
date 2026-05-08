@@ -624,7 +624,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         {name:'lastname',value:lastname},
         {name:'message',value:message},
         {name:'cl_primary_focus',value:getPillValues('primary_focus')},
-        {name:'cl_ai_comfort',value:getPillValues('ai_comfort')},
+        {name:'cl_ai_comfort_level',value:getPillValues('ai_comfort')},
         {name:'cl_primary_goal',value:getPillValues('primary_goal')},
         {name:'cl_project_status',value:getPillValues('has_project')},
         {name:'cl_project_description',value:(form.querySelector('[data-name="project_description"]')||{}).value||''},
@@ -637,7 +637,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         {name:'cl_confidentiality',value:confidValue?String(confidValue):''},
         {name:'cl_recording_consent',value:recYesBtn.getAttribute('aria-pressed')==='true'?'Yes':'No'},
         {name:'cl_additional_notes',value:(form.querySelector('[data-name="additional_context"]')||{}).value||''},
-        {name:'cl_email_copy',value:getPillValues('email_copy')}
+        {name:'cl_email_copy_requested',value:getPillValues('email_copy')}
       ].filter(function(f){return f.value!=='';}),
       context:{
         hutk:getHutk(),
